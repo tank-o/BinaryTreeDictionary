@@ -1,0 +1,3 @@
+/Users/charlie/Documents/Repos/BinaryTreeDict/cmake-build-debug/CMakeFiles/BinaryTreeDict.dir
+/Users/charlie/Documents/Repos/BinaryTreeDict/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/charlie/Documents/Repos/BinaryTreeDict/cmake-build-debug/CMakeFiles/rebuild_cache.dir

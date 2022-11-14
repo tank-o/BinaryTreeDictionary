@@ -1,0 +1,14 @@
+# ninja log v5
+2	671	1667562224729176240	CMakeFiles/BinaryTreeDict.dir/BinaryTreeDict.cpp.o	88edb9fc440fb127
+315	363	1668170399711084200	BinaryTreeDict	9279936e379eb531
+4	813	1668170080330704031	CMakeFiles/BinaryTreeDict.dir/timing_tests.cpp.o	1aefd813a9c3088
+1	315	1668170399661979501	CMakeFiles/BinaryTreeDict.dir/main.cpp.o	e58bfef31aef2fa9
+2	548	1667562224604912950	CMakeFiles/BinaryTreeDict.dir/Node.cpp.o	72087de72afdef1c
+0	112	1668421340946197558	build.ninja	dd6c67e50383ccfe
+2	338	1668169755178501370	CMakeFiles/BinaryTreeDict.dir/keyitemgenerator.cpp.o	10ee70a616bec3ea
+1	447	1668421350100021827	CMakeFiles/BinaryTreeDict.dir/Node.cpp.o	a55759feaf27b2ca
+2	560	1668421350215438280	CMakeFiles/BinaryTreeDict.dir/main.cpp.o	876d44699cc4d42e
+3	587	1668421350241490726	CMakeFiles/BinaryTreeDict.dir/keyitemgenerator.cpp.o	e0669286f2d9ce2b
+2	636	1668421350290009013	CMakeFiles/BinaryTreeDict.dir/BinaryTreeDict.cpp.o	e58b34eff4c9dc3
+3	752	1668421350409279436	CMakeFiles/BinaryTreeDict.dir/timing_tests.cpp.o	41e7027dfb2c6328
+752	808	1668421350467503689	BinaryTreeDict	b892f178c723fa5
