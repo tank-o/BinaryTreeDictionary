@@ -1,16 +1,19 @@
+//
+// Created by Charlie Surman on 26/11/2022.
+//
+
 #include "BinaryTreeDict.h"
-#include "keyitemgenerator.h"
 
-//
-// Created by Charlie Surman on 04/11/2022.
-//
-int main(){
-    BinaryTreeDict dict = BinaryTreeDict();
-    KeyItemGenerator gen = KeyItemGenerator();
+int main(int argc, char* argv[]){
+    // Create a new dictionary
+    BinaryTreeDict* dict = new BinaryTreeDict();
+    // Insert some entries
+    dict->insert(1,"one");
+    dict->insert(2,"two");
+    dict->insert(3,"three");
+    dict->insert(4,"four");
+    dict->insert(5,"five");
 
-    for (int i = 0;i < 25000;i++){
-        dict.insert(i,gen.randomItem());
-    }
-
-    dict.lookup(1000);
+    //delete dict
+    delete dict;
 }

@@ -3,8 +3,8 @@ project(BinaryTreeDict)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(BinaryTreeDict Node.cpp Node.h BinaryTreeDict.cpp BinaryTreeDict.h main.cpp keyitemgenerator.cpp keyitemgenerator.h timing_tests.cpp)
-
+add_executable(BinaryTreeDict Node.cpp Node.h BinaryTreeDict.cpp BinaryTreeDict.h keyitemgenerator.cpp keyitemgenerator.h main.cpp)
+add_executable(BinaryTreeDictTest Node.cpp Node.h BinaryTreeDict.cpp BinaryTreeDict.h testing.cpp)
 
 find_package(Boost 1.80.0 COMPONENTS system filesystem REQUIRED)
 
