@@ -27,6 +27,7 @@ std::string* BinaryTreeDict::lookupWorker(Node* current,int key){
     } else {
         lookupWorker(current->smaller, key);
     }
+
 }
 
 void BinaryTreeDict::insertWorker(Node* &current,int key,std::string item){
@@ -96,19 +97,18 @@ BinaryTreeDict::~BinaryTreeDict() {
 }
 
 void BinaryTreeDict::rotateLeft(Node*& root) {
-    Node* alpha= root->smaller;
     Node* b = root->bigger;
     Node* beta = b->smaller;
-    Node* gamma = b->bigger;
 
     root->bigger = beta;
     b->smaller = root;
+    root = b;
 }
 
 BinaryTreeDict &BinaryTreeDict::operator=(const BinaryTreeDict& source) {
     if (this == &source)
         return *this;
-    deepCopyWorker(source.head);
+    this->head = deepCopyWorker(source.head);
     return *this;
 }
 
@@ -121,47 +121,60 @@ BinaryTreeDict &BinaryTreeDict::operator=(BinaryTreeDict&& source) noexcept {
     return *this;
 }
 
-void BinaryTreeDict::remove(int keyToRemove) {
-    Node* nodeToRemove = this->head;
-    Node* parent = nullptr;
-    //find the node to remove
-    while (nodeToRemove != nullptr) {
-        if (nodeToRemove->key == keyToRemove) break;
-        parent = nodeToRemove;
-        if (nodeToRemove->key < keyToRemove)
-            nodeToRemove = nodeToRemove->bigger;
-        else
-            nodeToRemove = nodeToRemove->smaller;
-    }
+Node* minValueNode(Node* node){
+    Node* current = node;
+    /* loop down to find the leftmost leaf */
+    while (current && current->smaller != NULL)
+        current = current->smaller;
 
-    //if the node to remove has no children
-    if (nodeToRemove->smaller == nullptr && nodeToRemove->bigger == nullptr) {
-        if (parent == nullptr) {
+    return current;
+}
+
+void BinaryTreeDict::remove(int key) {
+    //find node to be deleted
+    Node *nodeToRemove = this->head;
+    Node *parent = nullptr;
+    while (nodeToRemove != nullptr && nodeToRemove->key != key) {
+        parent = nodeToRemove;
+        if (key < nodeToRemove->key)
+            nodeToRemove = nodeToRemove->smaller;
+        else
+            nodeToRemove = nodeToRemove->bigger;
+    }
+    if (nodeToRemove == nullptr) return;
+    if (nodeToRemove->smaller == nullptr and nodeToRemove->bigger == nullptr){
+        //is root node
+        if (parent == nullptr){
             this->head = nullptr;
-        } else if (parent->smaller == nodeToRemove) {
+            delete nodeToRemove;
+            return;
+        }
+        if (parent->smaller == nodeToRemove){
             parent->smaller = nullptr;
         } else {
             parent->bigger = nullptr;
         }
         delete nodeToRemove;
         return;
-    }
-
-    //if the node to remove has one child
-    if (nodeToRemove->smaller == nullptr || nodeToRemove->bigger == nullptr) {
-        Node* childOfRemoval = nodeToRemove->smaller == nullptr ? nodeToRemove->bigger : nodeToRemove->smaller;
-        if (parent == nullptr) {
-            this->head = childOfRemoval;
-        } else if (parent->smaller == nodeToRemove) {
-            parent->smaller = childOfRemoval;
-        } else {
-            parent->bigger = childOfRemoval;
+    }  else if ((nodeToRemove->smaller == nullptr) or (nodeToRemove->bigger == nullptr)) {
+        //node has one child
+        Node *child = nodeToRemove->smaller ? nodeToRemove->smaller : nodeToRemove->bigger;
+        if (parent == nullptr){
+            this->head = child;
+            delete nodeToRemove;
+            return;
         }
-        delete nodeToRemove;
+        if (nodeToRemove->smaller == child) {
+            parent->smaller = child;
+        } else {
+            parent->bigger = child;
+        }
+        free(nodeToRemove);
         return;
     }
-
-    //if the node to remove has two children
-
+    //node has two children
+    Node* successor = minValueNode(nodeToRemove->bigger);
+    remove(successor->key);
+    nodeToRemove->key = successor->key;
+    nodeToRemove->item = successor->item;
 }
-

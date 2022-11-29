@@ -16,11 +16,11 @@ public:
     std::string* lookup(int);
     void insert(int,std::string);
     void displayKeyOrder();
-    void testRotations();
     BinaryTreeDict & operator=(const BinaryTreeDict &);
     ~BinaryTreeDict();
     BinaryTreeDict & operator=(BinaryTreeDict &&) noexcept ;
     void remove(int);
+    Node* removeWorker(Node*,int);
 private:
     Node* head;
     void displayEntriesWorker(Node*);

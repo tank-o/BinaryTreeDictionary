@@ -307,3 +307,212 @@ BOOST_AUTO_TEST_SUITE( Copy_Assignment_Tests )
 BOOST_AUTO_TEST_SUITE_END()
 
 ////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+
+BOOST_AUTO_TEST_SUITE( Remove_Tests )
+
+    BOOST_AUTO_TEST_CASE( EmptyRemove )
+    {
+        BinaryTreeDict dict;
+        dict.remove(43);
+        isAbsent(dict,43);
+    }
+
+    BOOST_AUTO_TEST_CASE( RemoveChildlessRoot )
+    {
+        BinaryTreeDict dict;
+        dict.insert(7,"John");
+        dict.remove(7);
+        isAbsent(dict,7);
+    }
+
+    BOOST_AUTO_TEST_CASE( RemoveLeftChildOfRoot )
+    {
+        BinaryTreeDict dict;
+        dict.insert(31,"Anne");
+        dict.insert(7,"John");
+        dict.remove(7);
+
+        isAbsent(dict,7);
+        isPresent(dict,31,"Anne");
+    }
+
+    BOOST_AUTO_TEST_CASE( RemoveRightChildOfRoot )
+    {
+        BinaryTreeDict dict;
+        dict.insert(7,"John");
+        dict.insert(31,"Anne");
+        dict.remove(31);
+
+        isAbsent(dict,31);
+        isPresent(dict,7,"John");
+    }
+
+    BOOST_AUTO_TEST_CASE( InsertMany_RemoveChildlessNodes )
+    {
+        BinaryTreeDict dict;
+        insertTestData(dict);
+
+        dict.remove(-1);
+        isAbsent(dict,-1);
+
+        dict.remove(1);
+        isAbsent(dict,1);
+
+        dict.remove(19);
+        isAbsent(dict,19);
+
+        dict.remove(23);
+        isAbsent(dict,23);
+
+        dict.remove(31);
+        isAbsent(dict,31);
+
+        dict.remove(42);
+        isAbsent(dict,42);
+
+        dict.remove(4);
+        isAbsent(dict,4);
+
+        isPresent(dict,22,"Mary");
+        isPresent(dict,9,"Edward");
+        isPresent(dict,0,"Harold");
+        isPresent(dict,24,"James");
+        isPresent(dict,26,"Charles");
+        isPresent(dict,37,"Victoria");
+    }
+
+    BOOST_AUTO_TEST_CASE( OverwriteThenRemove )
+    {
+        BinaryTreeDict dict;
+        dict.insert(22,"Jane");
+        dict.insert(22,"Mary");
+        dict.insert(4,"Matilda");
+        dict.insert(26,"Oliver");
+        dict.insert(4,"Stephen");
+        dict.insert(26,"Charles");
+
+        dict.remove(4);
+        isAbsent(dict,4);
+
+        dict.remove(26);
+        isAbsent(dict,26);
+
+        dict.remove(22);
+        isAbsent(dict,22);
+    }
+
+    BOOST_AUTO_TEST_CASE( RemoveRootWithLeftChild )
+    {
+        BinaryTreeDict dict;
+        dict.insert(31,"Anne");
+        dict.insert(7,"John");
+        dict.remove(31);
+
+        isAbsent(dict,31);
+        isPresent(dict,7,"John");
+    }
+
+    BOOST_AUTO_TEST_CASE( RemoveRootWithRightChild )
+    {
+        BinaryTreeDict dict;
+        dict.insert(7,"John");
+        dict.insert(31,"Anne");
+        dict.remove(31);
+
+        isAbsent(dict,31);
+        isPresent(dict,7,"John");
+    }
+
+    BOOST_AUTO_TEST_CASE( InsertMany_RemoveNodesWithOneChild )
+    {
+        BinaryTreeDict dict;
+        insertTestData(dict);
+
+        dict.remove(4);
+        isAbsent(dict,4);
+
+        dict.remove(1);
+        isAbsent(dict,1);
+
+        dict.remove(9);
+        isAbsent(dict,9);
+
+        isPresent(dict,22,"Mary");
+        isPresent(dict,0,"Harold");
+        isPresent(dict,24,"James");
+        isPresent(dict,26,"Charles");
+        isPresent(dict,19,"Henry");
+        isPresent(dict,31,"Anne");
+        isPresent(dict,23,"Elizabeth");
+        isPresent(dict,37,"Victoria");
+        isPresent(dict,42,"Elizabeth");
+        isPresent(dict,-1,"Edward");
+    }
+
+    BOOST_AUTO_TEST_CASE( RemoveRootWithChildren )
+    {
+        BinaryTreeDict dict;
+        dict.insert(31,"Anne");
+        dict.insert(7,"John");
+        dict.insert(42,"Elizabeth");
+        dict.remove(31);
+
+        isAbsent(dict,31);
+        isPresent(dict,7,"John");
+        isPresent(dict,42,"Elizabeth");
+    }
+
+    BOOST_AUTO_TEST_CASE( InsertMany_RemoveNodesWithChildren )
+    {
+        BinaryTreeDict dict;
+        insertTestData(dict);
+
+        dict.remove(0);
+        isAbsent(dict,0);
+
+        dict.remove(37);
+        isAbsent(dict,37);
+
+        dict.remove(22);
+        isAbsent(dict,22);
+
+        isPresent(dict,4,"Stephen");
+        isPresent(dict,9,"Edward");
+        isPresent(dict,1,"William");
+        isPresent(dict,24,"James");
+        isPresent(dict,26,"Charles");
+        isPresent(dict,19,"Henry");
+        isPresent(dict,31,"Anne");
+        isPresent(dict,23,"Elizabeth");
+        isPresent(dict,42,"Elizabeth");
+        isPresent(dict,-1,"Edward");
+    }
+
+    BOOST_AUTO_TEST_CASE( InsertMany_RemoveAbsent )
+    {
+        BinaryTreeDict dict;
+        insertTestData(dict);
+
+        dict.remove(6);
+        isAbsent(dict,6);
+
+        isPresent(dict,22,"Mary");
+        isPresent(dict,4,"Stephen");
+        isPresent(dict,9,"Edward");
+        isPresent(dict,1,"William");
+        isPresent(dict,0,"Harold");
+        isPresent(dict,24,"James");
+        isPresent(dict,26,"Charles");
+        isPresent(dict,19,"Henry");
+        isPresent(dict,31,"Anne");
+        isPresent(dict,23,"Elizabeth");
+        isPresent(dict,37,"Victoria");
+        isPresent(dict,42,"Elizabeth");
+        isPresent(dict,-1,"Edward");
+    }
+
+BOOST_AUTO_TEST_SUITE_END()
+
+////////////////////////////////////////////////////////////////////////////////
