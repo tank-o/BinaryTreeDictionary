@@ -82,7 +82,7 @@ Node* BinaryTreeDict::deepCopyWorker(Node* node){
 }
 
 BinaryTreeDict::BinaryTreeDict(const BinaryTreeDict& originalDict) {
-    this->head = deepCopyWorker(originalDict.head);;
+    this->head = deepCopyWorker(originalDict.head);
 }
 
 BinaryTreeDict::BinaryTreeDict(BinaryTreeDict&& originalDict)  noexcept {
@@ -108,6 +108,9 @@ void BinaryTreeDict::rotateLeft(Node*& root) {
 BinaryTreeDict &BinaryTreeDict::operator=(const BinaryTreeDict& source) {
     if (this == &source)
         return *this;
+    if (this->head != nullptr)
+        deepDeleteWorker(this->head);
+
     this->head = deepCopyWorker(source.head);
     return *this;
 }
@@ -115,7 +118,6 @@ BinaryTreeDict &BinaryTreeDict::operator=(const BinaryTreeDict& source) {
 BinaryTreeDict &BinaryTreeDict::operator=(BinaryTreeDict&& source) noexcept {
     if (&source == this)
         return *this;
-    deepDeleteWorker(this->head);
     this->head = source.head;
     source.head = nullptr;
     return *this;
@@ -164,17 +166,53 @@ void BinaryTreeDict::remove(int key) {
             delete nodeToRemove;
             return;
         }
-        if (nodeToRemove->smaller == child) {
+        if (parent->smaller == nodeToRemove) {
             parent->smaller = child;
         } else {
             parent->bigger = child;
         }
-        free(nodeToRemove);
+        delete nodeToRemove;
         return;
     }
     //node has two children
     Node* successor = minValueNode(nodeToRemove->bigger);
-    remove(successor->key);
-    nodeToRemove->key = successor->key;
-    nodeToRemove->item = successor->item;
+    if (parent == nullptr){
+        this->head = successor;
+        successor->smaller = nodeToRemove->smaller;
+        delete nodeToRemove;
+        return;
+    }
+    if (parent->smaller == nodeToRemove) {
+        parent->smaller = successor;
+    } else {
+        parent->bigger = successor;
+    }
+    successor->smaller = nodeToRemove->smaller;
+    successor->bigger = nodeToRemove->bigger;
+    delete nodeToRemove;
+}
+
+void BinaryTreeDict::displayTree(){
+    displayTreeWorker(this->head,"");
+}
+
+void BinaryTreeDict::displayTreeWorker(Node* node,std::string indent){
+    if (node == nullptr) return;
+    displayTreeWorker(node->smaller,indent + "  ");
+    //print out tree with correct indentation
+    std::cout << indent << node->key << "+" << node->item << std::endl;
+    displayTreeWorker(node->bigger,indent + "   ");
+}
+
+void BinaryTreeDict::removeIf(std::function<bool(int)> func) {
+    removeIfWorker(this->head, func);
+}
+
+void BinaryTreeDict::removeIfWorker(Node* node, std::function<bool(int)> func){
+    if (node == nullptr) return;
+    removeIfWorker(node->smaller,func);
+    removeIfWorker(node->bigger,func);
+    if (func(node->key)){
+        remove(node->key);
+    }
 }
